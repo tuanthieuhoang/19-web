@@ -1,45 +1,5 @@
 /* script.js - 3D图片画廊逻辑 */
 
-// 分类常量
-const CATEGORIES = {
-    ALL: 'all',
-    TEXT: 'text',
-    IMAGE: 'image',
-    THREE_D: '3d',
-    INTERACTIVE: 'interactive',
-    OTHER: 'other'
-};
-
-// 版权类型
-const LICENSE_TYPES = {
-    OPEN_SOURCE: 'open-source',
-    FREE: 'free',
-    UNKNOWN: 'unknown',    
-    PRIVATE: 'private',     
-    PAID: 'paid',
-    OTHER: 'other'
-};
-
-// 分类显示名称映射
-const CATEGORY_NAMES = {
-    [CATEGORIES.ALL]: '所有',
-    [CATEGORIES.TEXT]: '文字工具',
-    [CATEGORIES.IMAGE]: '图片风格化工具',
-    [CATEGORIES.THREE_D]: '3D工具',
-    [CATEGORIES.INTERACTIVE]: '交互工具',
-    [CATEGORIES.OTHER]: '其他'
-};
-
-// 许可证显示名称映射
-const LICENSE_NAMES = {
-    [LICENSE_TYPES.OPEN_SOURCE]: '开源工具',
-    [LICENSE_TYPES.FREE]: '免费自制工具',
-    [LICENSE_TYPES.PAID]: '自制工具(需单独购买)',
-    [LICENSE_TYPES.UNKNOWN]: '未声明',
-    [LICENSE_TYPES.PRIVATE]: '仅限个人和学习使用',
-    [LICENSE_TYPES.OTHER]: '其他'
-};
-
 // 项目文件夹映射（前10个封面对应的项目内容）
 const PROJECT_FOLDERS = {
     1: '01-品牌设计',
@@ -78,20 +38,12 @@ class ToolsDataManager {
         } else if (normalizedImage.startsWith('/')) {
             normalizedImage = normalizedImage.substring(1); // 转为相对路径，增加兼容性
         }
-
-        const normalizedLicense = Object.values(LICENSE_TYPES).includes(tool.license)
-            ? tool.license
-            : LICENSE_TYPES.UNKNOWN;
-        const normalizedCategory = Object.values(CATEGORIES).includes(tool.category)
-            ? tool.category
-            : CATEGORIES.OTHER;
             
         return {
-            ...tool,
             id: normalizedId,
             imageUrl: normalizedImage || `images/${String(normalizedId).padStart(3, '0')}.png`,
-            license: normalizedLicense,
-            category: normalizedCategory,
+            title: tool.title || `设计工具 ${normalizedId}`,
+            description: tool.description || '',
             sortIndex: tool.sortIndex ?? normalizedId
         };
     }
@@ -100,134 +52,44 @@ class ToolsDataManager {
         // 这里放置所有的工具数据
         const baseTools = [
             {
-                id: 1,
                 title: "文字风格化网站",
-                description: "一个简单的文字特效生成工具",
-                imageUrl: "images/001.png",
-                link: "https://www.planevolumedimension.xyz/",
-                author: "Tong Li",
-                license: LICENSE_TYPES.OPEN_SOURCE,
-                category: CATEGORIES.TEXT,
-                tags: ["文字", "动态"],
-                createDate: "2024-01-01",
-                sortIndex: 1
+                imageUrl: "images/001.png"
             },
             {
-                id: 2,
                 title: "像素绘画网站",
-                description: "将图片转换为艺术风格",
-                imageUrl: "images/002.png",
-                link: "https://www.pixilart.com/draw",
-                author: "Bryan",
-                license: LICENSE_TYPES.OTHER,
-                category: CATEGORIES.INTERACTIVE,
-                tags: ["笔刷", "像素"],
-                createDate: "2024-03-21",
-                sortIndex: 2
+                imageUrl: "images/002.png"
             },
             {
-                id: 3,
                 title: "可变字体工具",
-                description: "可变字体的网站",
-                imageUrl: "images/003.png",
-                link: "https://hwlee40.github.io/webtype-jacob/projects/project3/index.html",
-                author: "hlee40@risd.edu",
-                license: LICENSE_TYPES.PRIVATE,
-                category: CATEGORIES.TEXT,
-                tags: ["文字", "艺术"],
-                createDate: "2024-06-19",
-                sortIndex: 3
+                imageUrl: "images/003.png"
             },
             {
-                id: 4,
                 title: "声音动态字体网站",
-                description: "将声音转为动态字体网站",
-                imageUrl: "images/004.png",
-                link: "https://vfw23.gdwithgd.com/",
-                author: "/Gabrieldrozdov",
-                license: LICENSE_TYPES.OPEN_SOURCE,
-                category: CATEGORIES.INTERACTIVE,
-                tags: ["文字", "交互"],
-                createDate: "2024-05-22",
-                sortIndex: 4
+                imageUrl: "images/004.png"
             },
             {
-                id: 5,
                 title: "动态背景网站",
-                description: "三角形网格背景生成网站",
-                imageUrl: "images/005.png",
-                link: "https://smallsites.gdwithgd.com/?site=perfect-polish",
-                author: "Gabrieldrozdov",
-                license: LICENSE_TYPES.OPEN_SOURCE,
-                category: CATEGORIES.OTHER,
-                tags: ["背景", "动态"],
-                createDate: "2024-05-23",
-                sortIndex: 5
+                imageUrl: "images/005.png"
             },
             {
-                id: 6,
                 title: "动态图片生成工具",
-                description: "将图片转换为艺术风格",
-                imageUrl: "images/006.png",
-                link: "https://pixelweaver.noreplica.com/",
-                author: "Gabrieldrozdov",
-                license: LICENSE_TYPES.OPEN_SOURCE,
-                category: CATEGORIES.IMAGE,
-                tags: ["图片", "动态"],
-                createDate: "2024-05-24",
-                sortIndex: 6
+                imageUrl: "images/006.png"
             },
             {
-                id: 7,
                 title: "视频实时转换动态图形",
-                description: "摄像头画面转为动态图形",
-                imageUrl: "images/007.png",
-                link: "https://23.people-people.app/",
-                author: "Sakamoto Shunta",
-                license: LICENSE_TYPES.OPEN_SOURCE,
-                category: CATEGORIES.INTERACTIVE,
-                tags: ["动态", "交互"],
-                createDate: "2024-05-025",
-                sortIndex: 7
+                imageUrl: "images/007.png"
             },
             {
-                id: 8,
                 title: "插画&字体多风格笔刷工具",
-                description: "调整笔刷绘制特殊风格",
-                imageUrl: "images/008.png",
-                link: "https://www.pixilart.com/draw",
-                author: "Sakamoto Shunta",
-                license: LICENSE_TYPES.OPEN_SOURCE,
-                category: CATEGORIES.INTERACTIVE,
-                tags: ["笔刷", "画笔"],
-                createDate: "2024-05-26",
-                sortIndex: 8
+                imageUrl: "images/008.png"
             },
             {
-                id: 9,
                 title: "图片转图案工具",
-                description: "将图片转换为图案风格",
-                imageUrl: "images/009.png",
-                link: "https://mise-en-abyme.studiodev.xyz/",
-                author: "Marie",
-                license: LICENSE_TYPES.OPEN_SOURCE,
-                category: CATEGORIES.IMAGE,
-                tags: ["图片", "艺术"],
-                createDate: "2024-05-27",
-                sortIndex: 9
+                imageUrl: "images/009.png"
             },
             {
-                id: 10,
                 title: "动态字体工具",
-                description: "将字体转换为矩形/圆形动态",
-                imageUrl: "images/010.png",
-                link: "https://danielavogel.com/explodeFont.html",
-                author: "Daniela vogel",
-                license: LICENSE_TYPES.UNKNOWN,
-                category: CATEGORIES.TEXT,
-                tags: ["文字", "动态"],
-                createDate: "2024-05-28",
-                sortIndex: 10
+                imageUrl: "images/010.png"
             }
             // ... 可以根据需要添加更多
         ];
@@ -250,25 +112,12 @@ class ToolsDataManager {
     
     getDefaultTool(id) {
         return {
-            id: id,
+            id,
             title: `设计工具 ${id}`,
-            description: "这是一个功能强大的设计工具，提供专业的创作功能。",
+            description: "",
             imageUrl: `images/${String(id).padStart(3, '0')}.png`,
-            author: "Unknown Author",
-            license: LICENSE_TYPES.UNKNOWN,
-            category: CATEGORIES.OTHER,
-            tags: ["设计", "工具"],
-            createDate: "2024-01-01",
             sortIndex: id
         };
-    }
-    
-    getLicenseName(licenseType) {
-        return LICENSE_NAMES[licenseType] || LICENSE_NAMES[LICENSE_TYPES.UNKNOWN];
-    }
-    
-    getCategoryName(category) {
-        return CATEGORY_NAMES[category] || CATEGORY_NAMES[CATEGORIES.OTHER];
     }
     
     getAllTools() {
